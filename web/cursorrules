@@ -1,0 +1,164 @@
+# ─────────────────────────────────────────────
+#  PROJECT RULES — Next.js + Atomic Design
+# ─────────────────────────────────────────────
+
+You are an expert Next.js 14 developer. Always follow the rules below strictly.
+
+## Stack
+- Framework : Next.js 14 (App Router)
+- Language  : TypeScript (strict mode)
+- Styling   : Tailwind CSS (mobile-first)
+- Icons     : lucide-react
+
+---
+
+## Atomic Design Architecture
+
+All components live under src/components/ and must follow this hierarchy:
+
+```
+src/
+├── app/                        ← Next.js App Router (pages, layouts, routes)
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── (routes)/
+├── components/
+│   ├── atoms/                  ← Smallest building blocks (no business logic)
+│   │   ├── Button/
+│   │   │   ├── index.tsx
+│   │   │   └── Button.types.ts
+│   │   ├── Input/
+│   │   ├── Icon/
+│   │   ├── Text/
+│   │   └── Badge/
+│   ├── molecules/              ← Combinations of atoms
+│   │   ├── SearchBar/
+│   │   ├── FormField/
+│   │   └── Card/
+│   ├── organisms/              ← Complex UI sections, may have local state
+│   │   ├── Navbar/
+│   │   ├── HeroSection/
+│   │   └── Footer/
+│   └── templates/              ← Page layouts with slots (no real data)
+│       ├── AuthLayout/
+│       └── DashboardLayout/
+├── hooks/                      ← Custom React hooks
+├── lib/                        ← Utilities, helpers, constants
+├── types/                      ← Global TypeScript types
+└── styles/                     ← Global CSS, Tailwind config overrides
+```
+
+---
+
+## Component Rules
+
+### Atoms
+- Zero business logic
+- No API calls or data fetching
+- Accept only primitive or simple typed props
+- Must be fully reusable and stateless (or minimal local UI state like hover)
+- Example: Button, Input, Label, Icon, Spinner, Avatar
+
+### Molecules
+- Combine 2+ atoms
+- May have simple local UI state (e.g. open/close toggle)
+- No API calls
+- Example: SearchBar (Input + Icon), FormField (Label + Input + ErrorText)
+
+### Organisms
+- Combine molecules and/or atoms into a meaningful UI section
+- May have local state and event handlers passed as props
+- No direct API calls (receive data via props)
+- Example: Navbar, ProductCard, CommentThread
+
+### Templates
+- Define the page layout/skeleton using slots (children props)
+- No real data — just structure and spacing
+- Example: TwoColumnLayout, AuthPageLayout
+
+### App (Pages)
+- Live inside src/app/ following Next.js App Router conventions
+- Fetch data here (server components, async functions)
+- Compose templates + organisms to build the full page
+
+---
+
+## TypeScript Rules
+
+- Every component must have a typed Props interface in a separate `.types.ts` file
+- Use `React.FC<Props>` or explicit return type `JSX.Element`
+- No `any` types — ever
+- Use `interface` for props, `type` for unions/utility types
+
+Example:
+```ts
+// Button.types.ts
+export interface ButtonProps {
+  label: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  onClick?: () => void;
+}
+```
+
+---
+
+## Styling Rules (Tailwind — Mobile First)
+
+- Always write mobile styles first, then scale up:
+  `className="text-sm md:text-base lg:text-lg"`
+- Use Tailwind utility classes only — no inline styles
+- For repeated patterns, extract into a component, not a custom CSS class
+- Use `cn()` utility (clsx + tailwind-merge) for conditional classNames
+
+```ts
+// lib/utils.ts
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
+
+---
+
+## File & Naming Conventions
+
+- Component folders: PascalCase  → `Button/`, `SearchBar/`
+- Component files : `index.tsx` inside the folder
+- Types file      : `ComponentName.types.ts`
+- Hooks           : camelCase starting with `use` → `useAuth.ts`
+- Utilities       : camelCase → `formatDate.ts`
+- Pages           : lowercase with hyphens (Next.js convention) → `app/about-us/page.tsx`
+
+---
+
+## When Creating a New Component — Always Ask:
+
+1. Which atomic layer does this belong to? (atom / molecule / organism / template)
+2. Does it need its own types file?
+3. Is it truly reusable or page-specific?
+4. Should it be a Server Component or Client Component?
+   - Default to Server Component
+   - Add `'use client'` only if it needs: useState, useEffect, event listeners, browser APIs
+
+---
+
+## Code Style
+
+- Always add a comment at the top of each component describing what it is and its layer
+- Keep components under 150 lines — split if larger
+- Prefer named exports over default exports for components
+- Group imports: React → Next.js → Third-party → Internal → Types → Styles
+
+---
+
+## Design Guidelines (Mobile-First)
+
+- Design for 375px screen width first
+- Touch targets must be minimum 44x44px
+- Use sufficient color contrast (WCAG AA minimum)
+- Avoid hover-only interactions — always have a tap-friendly alternative
+- Prefer bottom-of-screen navigation for mobile (thumb-friendly)
