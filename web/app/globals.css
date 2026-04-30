@@ -15,7 +15,7 @@
 html {
   min-height: 100%;
   /* Fixed navbar: hash links (e.g. Home → #hero) scroll with offset */
-  scroll-padding-top: 5.5rem;
+  scroll-padding-top: 3.85rem;
   /* Fallback behind transparent body (overscroll edges) */
   background-color: var(--background);
 }

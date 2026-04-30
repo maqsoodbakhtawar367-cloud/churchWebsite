@@ -1,13 +1,10 @@
-/**
- * Organism: MeetPastorSection
- * Mobile: eyebrow → title → portrait → bio → quote (centered).
- * Desktop (lg+): portrait left, copy column right — unchanged intent.
- */
+
 import Image from "next/image";
 import { Cormorant_Infant } from "next/font/google";
 import { jost } from "@/src/lib/fonts";
 import { SITE_HORIZONTAL_GUTTER } from "@/src/lib/siteGutters";
 import { cn } from "@/src/lib/utils";
+import { MeetPastorRevealGrid } from "./MeetPastorRevealGrid";
 import type { MeetPastorSectionProps } from "./MeetPastorSection.types";
 
 const cormorant = Cormorant_Infant({
@@ -163,27 +160,15 @@ export function MeetPastorSection({
       )}
     >
       <div className={cn("w-full", SITE_HORIZONTAL_GUTTER)}>
-        <div
-          className={cn(
+        <MeetPastorRevealGrid
+          gridClassName={cn(
             "mx-auto grid w-full max-w-7xl min-w-0 grid-cols-1 gap-y-6 sm:gap-y-8",
             "lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:items-center lg:gap-x-8 lg:gap-y-3 xl:gap-x-10 xl:gap-y-4",
           )}
-        >
-          {/* Row 1 mobile: titles — desktop: right column top */}
-          <div className="flex min-w-0 flex-col text-left lg:col-start-2 lg:row-start-1 lg:self-start">
-            {titleBlock}
-          </div>
-
-          {/* Row 2 mobile: portrait — desktop: left column, spans both text rows */}
-          <div className="lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-center">
-            {portrait}
-          </div>
-
-          {/* Row 3 mobile: bio + quote — desktop: right column bottom */}
-          <div className="flex min-w-0 flex-col text-left lg:col-start-2 lg:row-start-2 lg:self-start">
-            {bodyAndQuote}
-          </div>
-        </div>
+          portrait={portrait}
+          titleBlock={titleBlock}
+          bodyAndQuote={bodyAndQuote}
+        />
       </div>
     </section>
   );

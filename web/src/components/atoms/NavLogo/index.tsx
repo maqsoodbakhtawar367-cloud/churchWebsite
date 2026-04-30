@@ -32,7 +32,7 @@ export function NavLogo({
       aria-label={`${nameLine1} ${nameLine2} — home`}
       onClick={() => onNavigate?.()}
       className={cn(
-        "flex min-h-11 items-center gap-3 rounded-sm outline-offset-2 transition-opacity hover:opacity-90",
+        "flex min-h-9 items-center gap-2 rounded-sm outline-offset-2 transition-opacity hover:opacity-90 sm:gap-2.5",
         onDark
           ? "focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
           : "focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5a7a3a]",
@@ -42,10 +42,10 @@ export function NavLogo({
       <Image
         src={resolvedLogoSrc}
         alt={logoAlt}
-        width={48}
-        height={48}
+        width={36}
+        height={36}
         className={cn(
-          "h-12 w-12 shrink-0 object-contain",
+          "h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10",
           onDark &&
             resolvedLogoSrc.endsWith(".svg") &&
             "brightness-0 invert",
@@ -62,14 +62,14 @@ export function NavLogo({
         <span
           className={cn(
             nameSerif.className,
-            "text-base font-semibold leading-tight tracking-tight sm:text-lg",
+            "text-xs font-semibold leading-tight tracking-tight sm:text-sm",
           )}
         >
           {nameLine1}
         </span>
         <span
           className={cn(
-            "font-sans text-xs font-medium tracking-wide sm:text-sm",
+            "font-sans text-[10px] font-medium tracking-wide sm:text-[11px]",
             onDark ? "text-white/90" : "text-[#1a1a1a]/85",
           )}
         >

@@ -1,0 +1,77 @@
+@keyframes scrollRevealSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scrollRevealSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scrollRevealSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fromLeft {
+  opacity: 0;
+  transform: translateX(-2rem);
+}
+
+.fromLeftInView {
+  animation: scrollRevealSlideLeft var(--reveal-duration, 1.0s) ease-out
+    var(--reveal-delay, 0s) forwards;
+}
+
+.fromRight {
+  opacity: 0;
+  transform: translateX(2rem);
+}
+
+.fromRightInView {
+  animation: scrollRevealSlideRight var(--reveal-duration, 1.0s) ease-out
+    var(--reveal-delay, 0s) forwards;
+}
+
+.fromBottom {
+  opacity: 0;
+  transform: translateY(2rem);
+}
+
+.fromBottomInView {
+  animation: scrollRevealSlideUp var(--reveal-duration, 1.0s) ease-out
+    var(--reveal-delay, 0s) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fromLeft,
+  .fromRight,
+  .fromBottom {
+    opacity: 1;
+    transform: none;
+  }
+
+  .fromLeftInView,
+  .fromRightInView,
+  .fromBottomInView {
+    animation: none;
+  }
+}
