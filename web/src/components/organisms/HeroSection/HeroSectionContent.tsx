@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { InfoBadge } from "@/src/components/molecules/InfoBadge";
 import { cormorantTitle, jostBody } from "@/src/lib/fonts";
@@ -10,6 +11,8 @@ import {
   scrollReveal,
   useScrollReveal,
 } from "@/src/lib/scrollReveal";
+import { hrefAccessibilityLabel } from "@/src/lib/hrefAccessibility";
+import { SITE_VISIT_MAPS_HREF } from "@/src/lib/contactInfo";
 import { cn } from "@/src/lib/utils";
 import type { HeroSectionProps } from "./HeroSection.types";
 
@@ -22,6 +25,35 @@ const defaultClock = "/clock.svg";
 
 /** Slower than default scroll-reveal (1s) so the hero feels gentler. */
 const HERO_REVEAL_MS = 1750;
+
+function HeroAddressMapLink({
+  mapIcon,
+  address,
+  badgeClassName,
+}: {
+  mapIcon: ReactNode;
+  address: string;
+  badgeClassName?: string;
+}) {
+  return (
+    <a
+      href={SITE_VISIT_MAPS_HREF}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn(
+        "rounded-lg text-inherit no-underline transition-colors outline-offset-2",
+        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#628141]",
+        "hover:bg-[#628141]/[0.06]",
+      )}
+      aria-label={hrefAccessibilityLabel({
+        href: SITE_VISIT_MAPS_HREF,
+        title: "Visit Us",
+      })}
+    >
+      <InfoBadge preLine className={badgeClassName} icon={mapIcon} text={address} />
+    </a>
+  );
+}
 
 export function HeroSectionContent({
   heading,
@@ -144,7 +176,11 @@ export function HeroSectionContent({
         >
           <div className="mt-8 w-full min-w-0 sm:mt-10">
             <div className="flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-3 border-t border-[#1a1a1a]/10 pt-6 sm:gap-x-4 sm:pt-7">
-              <InfoBadge preLine className="w-auto min-w-0 shrink" icon={mapIcon} text={address} />
+              <HeroAddressMapLink
+                mapIcon={mapIcon}
+                address={address}
+                badgeClassName="w-auto min-w-0 shrink"
+              />
               <div
                 className="h-10 w-px shrink-0 self-center bg-[#1a1a1a]/15"
                 role="separator"
@@ -207,11 +243,10 @@ export function HeroSectionContent({
                 <div className="w-full pt-4 min-[400px]:pt-5 sm:pt-5">
                   <div className="w-full pl-2 min-[400px]:pl-3 sm:pl-4 md:pl-5 lg:pl-6">
                     <div className="flex w-full min-w-0 flex-col items-start justify-start gap-3 sm:flex-row sm:items-stretch sm:gap-4 md:gap-6 lg:gap-8">
-                      <InfoBadge
-                        preLine
-                        className="w-full min-w-0 sm:w-auto sm:shrink"
-                        icon={mapIcon}
-                        text={address}
+                      <HeroAddressMapLink
+                        mapIcon={mapIcon}
+                        address={address}
+                        badgeClassName="w-full min-w-0 sm:w-auto sm:shrink"
                       />
 
                       <div
